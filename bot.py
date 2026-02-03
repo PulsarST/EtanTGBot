@@ -2,6 +2,8 @@ import asyncio
 import os
 
 from aiogram import Bot, Dispatcher, F
+from aiogram.filters import Command
+from aiogram.filters.command import CommandStart
 from aiogram.types import Message
 from dotenv import load_dotenv
 
@@ -16,9 +18,9 @@ bot = Bot(bot_token)
 dp = Dispatcher()
 
 
-@dp.message(F.text == "/start")
+@dp.message(CommandStart())
 async def start(message: Message):
-    """function to procces command start and send hello to user"""
+    """function to procces start command and send hello to user"""
 
     if message.from_user is None:
         return
