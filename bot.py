@@ -1,11 +1,10 @@
 import asyncio
 import os
 
-from aiogram import Bot, Dispatcher, F
-from aiogram.filters import Command
-from aiogram.filters.command import CommandStart
-from aiogram.types import Message
+from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv
+
+from routers import callbacks
 
 load_dotenv()
 
@@ -18,17 +17,6 @@ bot = Bot(bot_token)
 dp = Dispatcher()
 
 
-@dp.message(CommandStart())
-async def start(message: Message):
-    """function to procces start command and send hello to user"""
-
-    if message.from_user is None:
-        return
-
-    user_first_name = message.from_user.first_name
-    await message.answer(f"hello, {user_first_name}")
-
-
 async def main() -> None:
     """main function, it starts polling and configures general projects components"""
 
@@ -37,6 +25,7 @@ async def main() -> None:
     bacause user can send a lot of /start command and to reduce it we delete webhook which
     responsible for it
     """
+    dp.include_router(callbacks.router)
     await bot.delete_webhook(drop_pending_updates=True)
 
     "starts polling"
