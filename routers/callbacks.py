@@ -1,5 +1,6 @@
 from aiogram.dispatcher.router import Router
 from aiogram.filters import CommandStart
+from aiogram.filters.command import Command
 from aiogram.types import Message
 
 router = Router()
@@ -14,3 +15,8 @@ async def start_command(meesage: Message):
 
     user_first_name = meesage.from_user.first_name
     await meesage.answer(f"Hi, {user_first_name} !")
+
+
+@router.message(Command("review"))
+async def send_review(message: Message):
+    await message.answer("i got your review !")
