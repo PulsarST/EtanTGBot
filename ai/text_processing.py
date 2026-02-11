@@ -1,6 +1,8 @@
-import base_settings
+from datetime import datetime
 
-from database import schemes
+from database.schemes import StudentsReview
+
+from . import base_settings
 
 
 async def process_raw_text(text: str) -> str | None:
@@ -22,7 +24,9 @@ async def process_raw_text(text: str) -> str | None:
     return respone.text
 
 
-async def generate_json_from_text(text: str) -> schemes.StudentsReview:
+async def generate_json_from_text(
+    text: str, professors_name: str, subjects_name: str, date: datetime
+) -> StudentsReview:
     """
     generate a StudentReview schema from processed text
 
@@ -36,9 +40,17 @@ async def generate_json_from_text(text: str) -> schemes.StudentsReview:
         AttributeError: if Gemini ai can't generate Json from processed text
     """
     response = base_settings.client.models.generate_content(
-        model=base_settings.model, contents=[]
+        model=base_settings.model,
+        contents=[
+            text,
+            f"professor's name: {professors_name}",
+            f"subjects name: {subjects_name}",
+            f"datetime: {date}",
+        ],
     )
     if response.text is None:
         raise AttributeError("Gemini response is None")
 
-    return schemes.StudentsReview.model_validate_json(response.text)
+    print(response.text)
+
+    return StudentsReview.model_validate_json(response.text)
