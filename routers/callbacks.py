@@ -53,8 +53,10 @@ async def process_student_text(message: Message, state: FSMContext) -> None:
     students_text = message.text
     datetime = message.date
 
-    print(
-        f"professors name: {professors_name}\nsubjects name: {subjects_name}\nstudents text: {students_text}\ndatetime: {datetime}"
+    from text_input_processor import create_students_review
+
+    await create_students_review(
+        str(professors_name), str(subjects_name), students_text, datetime
     )
 
     await message.answer("Благодарим за ваш отзыв !")
