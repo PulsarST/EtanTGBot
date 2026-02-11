@@ -7,20 +7,20 @@ from pydantic import BaseModel, Field
 class StudentsReview(BaseModel):
     """Student Review is a schema for students reviews in DB."""
 
-    mark: int
-    """mark(int): defeined in [1, 10] and describes a studenet opinion in int about professor, or activity in univeristy."""
-
     causes: List[str]
     """causes(List[str]): a list of causes why student sends good, bad review about professor, or activity in university."""
+
+    mark: int
+    """mark(int): defeined in [1, 10] and describes a studenet opinion in int about professor, or activity in univeristy."""
 
     professors_name: str
     """professors_name(str): name of professor."""
 
-    subject: str
-    """subject(str): a name of subject."""
-
     date: datetime = Field(default_factory=datetime.now)
     """date(datetime): the date when review was sended."""
+
+    subject: str
+    """subject(str): a name of subject."""
 
 
 class ProfessorSchema(BaseModel):
